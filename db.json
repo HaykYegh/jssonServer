@@ -1,65 +1,26 @@
 {
-  "employees": [
+  "users": [
     {
-      "id": 1,
-      "name": "Hakob",
-      "surname": "Hakobyan",
-      "email": "hakob.hakobyan@gmail.com",
-      "position": "Frontend Developer"
-    },
-    {
-      "id": 2,
-      "name": "Serob",
-      "surname": "Serobyan",
-      "email": "serob.serobyan@gmail.com",
-      "position": "Backend Developer"
-    },
-    {
-      "id": "4",
-      "name": "Qnar",
-      "surname": "Arshakyan",
-      "email": "qarsh@gmail.com",
-      "position": "QA"
-    },
-    {
-      "name": "Artur",
-      "surname": "Asatryan",
-      "email": "aasat@gmail.com",
-      "id": "_h92C1D"
+      "id": 1686914178239,
+      "username": "myusername",
+      "password": "$2b$10$m9P7fMzNa2uUMW0to1ClwO.XGoTkkDncU7nZQJVA.drh4vjDtJTrK",
+      "age": 30,
+      "email": "myemail@example.com",
+      "gender": "male"
     }
   ],
-  "tasks": [
+  "boards": [
     {
-      "id": 1,
-      "name": "Home Page",
-      "description": "description ..",
-      "startDate": "12/01/2023",
-      "endDate": "12/02/2023",
-      "employeeId": 1
+      "userId": 1686914178239,
+      "sortId": 1,
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "About Us",
-      "description": "description",
-      "startDate": "12/03/2023",
-      "endDate": "12/04/2024",
-      "employeeId": 1
-    },
-    {
-      "id": 3,
-      "name": "Authentication",
-      "description": "description ..",
-      "startDate": "12/01/2023",
-      "endDate": "12/02/2023",
-      "employeeId": 2
-    },
-    {
-      "id": 4,
-      "name": "Login",
-      "description": "description",
-      "startDate": "12/03/2023",
-      "endDate": "12/04/2024",
-      "employeeId": 2
+      "userId": 1686914178239,
+      "sortId": 2,
+      "id": 2
     }
-  ]
+  ],
+  "categories": [],
+  "tasks": []
 }
