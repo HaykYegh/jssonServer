@@ -95,6 +95,11 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.post('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.status(200).json({ message: 'User logged out successfully' });
+});
+
 // Middleware to authenticate JWT
 function authenticateJWT(req, res, next) {
   const token = req.cookies.token;
