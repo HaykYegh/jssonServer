@@ -118,10 +118,10 @@ function authenticateJWT(req, res, next) {
   }
 }
 
-app.get('/user/:email', authenticateJWT, async (req, res) => {
+app.get('/user', authenticateJWT, async (req, res) => {
   try {
     let user = router.db.get('users')
-      .find({ email: req.params.email })
+      .find({ email: req.user.email })
       .value();
 
     if (!user) {
@@ -208,7 +208,18 @@ app.get('/tasks/:categoryId', authenticateJWT, (req, res) => {
   res.status(200).json(tasks);
 });
 
+app.get('/tasks/:taskId', authenticateJWT, (req, res) => {
+  const { taskId } = req.params;
 
+  // It's assumed that the task database has entries structured like { taskId, userId, ...taskData }
+  const task = router.db.get('tasks').find({ taskId }).value();
+
+  if (task) {
+    res.status(200).json(task);
+  } else {
+    res.status(404).json({ message: 'Task not found' });
+  }
+});
 
 const PORT = process.env.PORT || 3000;
 

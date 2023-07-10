@@ -7,6 +7,14 @@
       "age": 30,
       "email": "myemail@example.com",
       "gender": "male"
+    },
+    {
+      "id": 1688459995201,
+      "username": "myusername2",
+      "password": "$2b$10$iX9tkv/iIXzECQdDHJr1rOUAP3cJ/LJSid4p9eUo6e98ic3Yzsrzm",
+      "age": 30,
+      "email": "myemail2@example.com",
+      "gender": "male"
     }
   ],
   "boards": [
@@ -19,8 +27,66 @@
       "userId": 1686914178239,
       "sortId": 2,
       "id": 2
+    },
+    {
+      "name": "Test board",
+      "userId": 1688459995201,
+      "sortId": 3,
+      "id": 3
+    },
+    {
+      "name": "Test board 2",
+      "userId": 1688459995201,
+      "sortId": 4,
+      "id": 4
+    },
+    {
+      "name": "Test board 3",
+      "userId": 1688459995201,
+      "sortId": 5,
+      "id": 5
+    },
+    {
+      "name": "Test board 4",
+      "userId": 1688459995201,
+      "sortId": 6,
+      "id": 6
     }
   ],
-  "categories": [],
-  "tasks": []
+  "categories": [
+    {
+      "name": "List 1",
+      "boardId": 3,
+      "sortId": 1,
+      "id": 1
+    },
+    {
+      "name": "List 2",
+      "boardId": 3,
+      "sortId": 2,
+      "id": 2
+    },
+    {
+      "name": "List 3",
+      "boardId": 3,
+      "sortId": 3,
+      "id": 3
+    }
+  ],
+  "tasks": [
+    {
+      "name": "Hellow",
+      "description": "owdicowc",
+      "categoryId": 1,
+      "sortId": 1,
+      "id": 1
+    },
+    {
+      "name": "Task 2",
+      "description": "owdicowc",
+      "categoryId": 2,
+      "sortId": 2,
+      "id": 2
+    }
+  ]
 }
