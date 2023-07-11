@@ -82,7 +82,7 @@ app.post('/login', async (req, res) => {
       res.cookie('token', token, {
         httpOnly: true, // Make the cookie HTTP-only
         secure: false, // Set secure flag for HTTPS
-        sameSite: 'strict', // Prevent CSRF
+        sameSite: 'none', // Prevent CSRF
       });
 
       res.status(200).json({ message: 'User authenticated successfully', token });
