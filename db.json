@@ -15,6 +15,13 @@
       "age": 30,
       "email": "myemail2@example.com",
       "gender": "male"
+    },
+    {
+      "id": 1689092567388,
+      "password": "$2b$10$F.XqUBWcax2IwFiQXbYFHusuuotIraJoYfnI66Mvrap/HsMNZCfyi",
+      "age": "2023-07-17",
+      "email": "user@gmail.com",
+      "gender": "Male"
     }
   ],
   "boards": [
