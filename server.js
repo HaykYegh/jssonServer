@@ -79,7 +79,10 @@ app.post('/login', async (req, res) => {
       // User authenticated successfully, generate a JWT
       const { password, ...userInfoWithoutPassword } = user;
       let token = jwt.sign(userInfoWithoutPassword, process.env.JWT_SECRET, { expiresIn: '1h' });
-      res.cookie('token', token);
+      res.cookie('token', token, {
+        secure: false, // Set secure flag for HTTPS
+        sameSite: 'none', // Prevent CSRF
+      });
 
       res.status(200).json({ message: 'User authenticated successfully', token });
     } else {
