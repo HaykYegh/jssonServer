@@ -13,8 +13,8 @@ const app = express();
 
 app.use(cookieParser());
 const corsOptions = {
-  origin: 'http://localhost:3000', // replace with your actual domain
-  credentials: true, // allow the cookie to be sent with the request
+  origin: ['http://localhost:3000', 'https://young-citadel-44598.herokuapp.com'],
+  credentials: true,
 };
 app.use(cors(corsOptions));
 
