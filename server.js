@@ -47,7 +47,8 @@ app.post('/register', async (req, res) => {
 
     let newUser = {
       id,
-      username: req.body.username,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
       password: hashedPassword,
       age: req.body.age,
       email: req.body.email,
