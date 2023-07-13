@@ -107,7 +107,14 @@ function authenticateJWT(req, res, next) {
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
-        return res.sendStatus(403);
+        console.error('JWT error:', err);
+        if (err.name === 'TokenExpiredError') {
+          return res.status(403).send('Token has expired');
+        } else if (err.name === 'JsonWebTokenError') {
+          return res.status(403).send('Invalid token');
+        } else {
+          return res.sendStatus(403);
+        }
       }
 
       req.user = user;
