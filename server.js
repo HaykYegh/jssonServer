@@ -81,7 +81,7 @@ app.post('/login', async (req, res) => {
       let token = jwt.sign(userInfoWithoutPassword, process.env.JWT_SECRET, { expiresIn: '1h' });
       res.cookie('token', token, {
         httpOnly: true,
-        secure: true, // Set secure flag for HTTPS
+        secure: process.env.NODE_ENV === 'production', // Set secure flag for HTTPS in production only
         sameSite: 'none', // Prevent CSRF
       });
 
