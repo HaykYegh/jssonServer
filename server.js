@@ -78,7 +78,7 @@ app.post('/login', async (req, res) => {
     if (await bcrypt.compare(req.body.password, user.password)) {
       // User authenticated successfully, generate a JWT
       const { password, ...userInfoWithoutPassword } = user;
-      let token = jwt.sign(userInfoWithoutPassword, process.env.JWT_SECRET, { expiresIn: '1h' });
+      let token = jwt.sign(userInfoWithoutPassword, process.env.JWT_SECRET, { expiresIn: '24h' });
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', // Set secure flag for HTTPS in production only
