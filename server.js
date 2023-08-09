@@ -150,11 +150,12 @@ app.get('/user', authenticateJWT, async (req, res) => {
 
 // Create a new board
 app.post('/boards', authenticateJWT, (req, res) => {
-  const { name } = req.body;
+  const { name, background } = req.body;
 
   try {
+    console.log("name -> ", name)
     const sortId = router.db.get('boards').value().length + 1;
-    const newBoard = router.db.get('boards').insert({ name, userId: req.user.id, sortId }).write();
+    const newBoard = router.db.get('boards').insert({ name, background, userId: req.user.id, sortId }).write();
     res.status(201).json(newBoard);
   } catch (error) {
     res.status(500).send('Error creating the board');
@@ -202,6 +203,25 @@ app.get('/boards', authenticateJWT, (req, res) => {
   res.status(200).json(userBoards);
 });
 
+app.get('/boards/:boardId', authenticateJWT, (req, res) => {
+  // Access the userId from the JWT
+  const userId = req.user.id;
+
+  // Access the boardId from the request parameters
+  const boardId = Number(req.params.boardId);
+
+  // Fetch the board from the database
+  const board = router.db.get('boards')
+    .find({ id: boardId, userId })
+    .value();
+
+  if (!board) {
+    return res.status(404).json({ error: 'Board not found' });
+  }
+
+  res.status(200).json(board);
+});
+
 // Get sorted categories
 app.get('/categories/:boardId', authenticateJWT, (req, res) => {
   const boardId = req.params.boardId;
@@ -229,6 +249,168 @@ app.get('/tasks/:taskId', authenticateJWT, (req, res) => {
   }
 });
 
+
+// Update a board
+app.put('/boards/:id', authenticateJWT, (req, res) => {
+  const { name, background } = req.body;
+  const id = Number(req.params.id);
+
+  try {
+    let board = router.db.get('boards').find({ id }).assign({ name, background }).write();
+    res.status(200).json(board);
+  } catch (error) {
+    res.status(500).send('Error updating the board');
+  }
+});
+
+// Delete a board
+app.delete('/boards/:id', authenticateJWT, (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    router.db.get('boards').remove({ id }).write();
+    res.status(200).send('Board deleted successfully');
+  } catch (error) {
+    res.status(500).send('Error deleting the board');
+  }
+});
+
+// Update a category
+app.put('/categories/:id', authenticateJWT, (req, res) => {
+  const { name } = req.body;
+  const id = Number(req.params.id);
+
+  try {
+    let category = router.db.get('categories').find({ id }).assign({ name }).write();
+    res.status(200).json(category);
+  } catch (error) {
+    res.status(500).send('Error updating the category');
+  }
+});
+
+// Delete a category
+app.delete('/categories/:id', authenticateJWT, (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    router.db.get('categories').remove({ id }).write();
+    res.status(200).send('Category deleted successfully');
+  } catch (error) {
+    res.status(500).send('Error deleting the category');
+  }
+});
+
+// Update a task
+app.put('/tasks/:id', authenticateJWT, (req, res) => {
+  const { name, description } = req.body;
+  const id = Number(req.params.id);
+
+  try {
+    let task = router.db.get('tasks').find({ id }).assign({ name, description }).write();
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(500).send('Error updating the task');
+  }
+});
+
+// Delete a task
+app.delete('/tasks/:id', authenticateJWT, (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    router.db.get('tasks').remove({ id }).write();
+    res.status(200).send('Task deleted successfully');
+  } catch (error) {
+    res.status(500).send('Error deleting the task');
+  }
+});
+
+// Create a new comment for a task
+app.post('/tasks/:taskId/comments', authenticateJWT, (req, res) => {
+  const { comment } = req.body;
+  const taskId = Number(req.params.id);
+  const user = req.user;
+
+  try {
+    const id = Date.now();
+    const userInfo = {
+      id: user.id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      gender: user.gender,
+    }
+    const newComment = { id, taskId, comment, userInfo, date: new Date() };
+    const createdComment = router.db.get('comments').push(newComment).write();
+
+    res.status(201).json({
+      ...createdComment,
+      userInfo
+    });
+  } catch (error) {
+    res.status(500).send('Error creating the comment');
+  }
+});
+
+// Edit a comment
+app.put('/comments/:commentId', authenticateJWT, (req, res) => {
+  const { comment } = req.body;
+  const commentId = Number(req.params.id);
+  const user = req.user;
+
+  try {
+    let commentToUpdate = router.db.get('comments').find({ id: commentId }).value();
+
+    // Check if comment exists
+    if (!commentToUpdate) {
+      return res.status(404).send('Comment not found');
+    }
+
+    // Check if user is the owner of the comment
+    if (commentToUpdate.userInfo.id !== user.id) {
+      return res.status(403).send('Cannot edit a comment from another user');
+    }
+
+    const updatedComment = { ...commentToUpdate, comment, date: new Date() };
+    router.db.get('comments').find({ id: commentId }).assign(updatedComment).write();
+
+    res.status(200).json(updatedComment);
+  } catch (error) {
+    res.status(500).send('Error updating the comment');
+  }
+});
+
+// Delete a comment
+app.delete('/comments/:commentId', authenticateJWT, (req, res) => {
+  const commentId = req.params.commentId;
+  const user = req.user;
+
+  try {
+    let commentToDelete = router.db.get('comments').find({ id: commentId }).value();
+
+    // Check if comment exists
+    if (!commentToDelete) {
+      return res.status(404).send('Comment not found');
+    }
+
+    // Check if user is the owner of the comment
+    if (commentToDelete.userInfo.id !== user.id) {
+      return res.status(403).send('Cannot delete a comment from another user');
+    }
+
+    router.db.get('comments').remove({ id: commentId }).write();
+    res.status(200).send('Comment deleted successfully');
+  } catch (error) {
+    res.status(500).send('Error deleting the comment');
+  }
+});
+
+
+
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+
+
