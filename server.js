@@ -266,10 +266,13 @@ app.put('/boards/:id', authenticateJWT, (req, res) => {
 // Delete a board
 app.delete('/boards/:id', authenticateJWT, (req, res) => {
   const id = Number(req.params.id);
-
   try {
-    router.db.get('boards').remove({ id }).write();
-    res.status(200).send('Board deleted successfully');
+    if(id) {
+      router.db.get('boards').remove({ id }).write();
+      res.status(200).send('Board deleted successfully');
+    } else {
+      res.status(401).send('there is not such board');
+    }
   } catch (error) {
     res.status(500).send('Error deleting the board');
   }
