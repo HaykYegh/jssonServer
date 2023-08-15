@@ -266,8 +266,12 @@ app.put('/boards/:id', authenticateJWT, (req, res) => {
 // Delete a board
 app.delete('/boards/:id', authenticateJWT, (req, res) => {
   const id = Number(req.params.id);
+  const userId = req.user.id;
   try {
-    if(id) {
+    const board = router.db.get('boards')
+      .find({ id, userId })
+      .value();
+    if(board) {
       router.db.get('boards').remove({ id }).write();
       res.status(200).send('Board deleted successfully');
     } else {
