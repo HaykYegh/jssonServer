@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import sendMailerRoute from './sendMailer/index.js';
 import jsonServer from 'json-server';
 import jwt from 'jsonwebtoken';
 
@@ -411,6 +412,9 @@ app.delete('/comments/:commentId', authenticateJWT, (req, res) => {
     res.status(500).send('Error deleting the comment');
   }
 });
+
+
+app.use('/sendMailer', sendMailerRoute);
 
 
 
