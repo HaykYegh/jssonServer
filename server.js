@@ -154,9 +154,9 @@ app.post('/boards', authenticateJWT, (req, res) => {
   const { name, background } = req.body;
 
   try {
-    console.log("name -> ", name)
+    const id = Date.now();
     const sortId = router.db.get('boards').value().length + 1;
-    const newBoard = router.db.get('boards').insert({ name, background, userId: req.user.id, sortId }).write();
+    const newBoard = router.db.get('boards').insert({ id, name, background, userId: req.user.id, sortId }).write();
     res.status(201).json(newBoard);
   } catch (error) {
     res.status(500).send('Error creating the board');
@@ -225,7 +225,8 @@ app.get('/boards/:boardId', authenticateJWT, (req, res) => {
 
 // Get sorted categories
 app.get('/categories/:boardId', authenticateJWT, (req, res) => {
-  const boardId = req.params.boardId;
+  const boardId = req.params.boardId;req
+
   const categories = router.db.get('categories').filter({ boardId }).sortBy('sortId').value();
   res.status(200).json({categories, boardId});
 });
