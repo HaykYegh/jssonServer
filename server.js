@@ -228,7 +228,7 @@ app.get('/categories/:boardId', authenticateJWT, (req, res) => {
   const boardId = req.params.boardId;req
 
   const categories = router.db.get('categories').filter({ boardId }).sortBy('sortId').value();
-  res.status(200).json({categories, boardId});
+  res.status(200).json(categories);
 });
 
 // Get sorted tasks
