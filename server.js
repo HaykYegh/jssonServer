@@ -178,11 +178,11 @@ app.post('/categories', authenticateJWT, (req, res) => {
 
 // Create a new task
 app.post('/tasks', authenticateJWT, (req, res) => {
-  const { name, description, categoryId } = req.body;
+  const { name, description, categoryId, startDate, endDate  } = req.body;
 
   try {
     const sortId = router.db.get('tasks').value().length + 1;
-    const newTask = router.db.get('tasks').insert({ name, description, categoryId, sortId }).write();
+    const newTask = router.db.get('tasks').insert({ name, description, startDate, endDate, categoryId, sortId }).write();
     res.status(201).json(newTask);
   } catch (error) {
     res.status(500).send('Error creating the task');
@@ -311,11 +311,11 @@ app.delete('/categories/:id', authenticateJWT, (req, res) => {
 
 // Update a task
 app.put('/tasks/:id', authenticateJWT, (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, startDate, endDate } = req.body;
   const id = Number(req.params.id);
 
   try {
-    let task = router.db.get('tasks').find({ id }).assign({ name, description }).write();
+    let task = router.db.get('tasks').find({ id }).assign({ name, description, startDate, endDate }).write();
     res.status(200).json(task);
   } catch (error) {
     res.status(500).send('Error updating the task');
